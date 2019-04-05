@@ -1,43 +1,48 @@
 package br.pro.hashi.ensino.desagil.aps.model;
 
+public class XorGate extends Gate {
+    private final NandGate nandLeft;
+    private final NandGate nandTop;
+    private final NandGate nandBottom;
+    private final NandGate nandRight;
 
-public class XorGate extends Gate{
-    private final NandGate[] nand;
 
-    public XorGate(){
-        super(2);
-        nand = new NandGate[4];
-        nand[0] = new NandGate();
-        nand[1] = new NandGate();
-        nand[2] = new NandGate();
-        nand[3] = new NandGate();
+    public XorGate() {
+        super("XOR", 2);
 
-        nand[3].connect(0, nand[1]);
-        nand[3].connect(1, nand[2]);
+        nandLeft = new NandGate();
 
-        nand[1].connect(1, nand[0]);
-        nand[2].connect(0, nand[0]);
+        nandTop = new NandGate();
+        nandTop.connect(1, nandLeft);
 
+        nandBottom = new NandGate();
+        nandBottom.connect(0, nandLeft);
+
+        nandRight = new NandGate();
+        nandRight.connect(0, nandTop);
+        nandRight.connect(1, nandBottom);
     }
+
 
     @Override
-    public boolean read(){
-        return nand[3].read();
+    public boolean read() {
+        return nandRight.read();
     }
+
 
     @Override
     public void connect(int inputPin, SignalEmitter emitter) {
-        if (inputPin < 0 || inputPin > 1) {
-            throw new IndexOutOfBoundsException(inputPin);
-        }
-
-        if (inputPin == 0) {
-            nand[0].connect(0, emitter);
-            nand[1].connect(0, emitter);
-        }
-        if (inputPin == 1) {
-            nand[0].connect(1, emitter);
-            nand[2].connect(1, emitter);
+        switch (inputPin) {
+            case 0:
+                nandTop.connect(0, emitter);
+                nandLeft.connect(0, emitter);
+                break;
+            case 1:
+                nandLeft.connect(1, emitter);
+                nandBottom.connect(1, emitter);
+                break;
+            default:
+                throw new IndexOutOfBoundsException(inputPin);
         }
     }
 }
