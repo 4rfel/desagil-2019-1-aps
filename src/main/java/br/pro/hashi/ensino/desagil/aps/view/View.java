@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 public class View extends JPanel implements ActionListener {
-
     private final JComboBox<Gate> menu;
     private GateView gateView;
 
@@ -30,9 +29,7 @@ public class View extends JPanel implements ActionListener {
     private void addGateView(int index) {
 
         Gate gate = menu.getItemAt(index);
-
         gateView = new GateView(gate);
-
         add(gateView);
     }
 
@@ -40,11 +37,11 @@ public class View extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent event) {
 
         remove(gateView);
-
         int index = menu.getSelectedIndex();
-
         addGateView(index);
 
+        // Mantenha esta linha, mas não precisa entendê-la.
+        // É necessária para evitar bugs em alguns sistemas.
         ((JFrame) SwingUtilities.getRoot(this)).pack();
     }
 }

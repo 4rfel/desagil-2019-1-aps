@@ -10,10 +10,10 @@ public class APS {
     public static void main(String[] args) {
 
         LinkedList<Gate> model = new LinkedList<>();
-        model.add(new AndGate());
-        model.add(new OrGate());
-        model.add(new NotGate());
         model.add(new NandGate());
+        model.add(new NotGate());
+        model.add(new OrGate());
+        model.add(new AndGate());
         model.add(new XorGate());
 
         View view = new View(model);
@@ -22,9 +22,11 @@ public class APS {
             JFrame frame = new JFrame();
             frame.setContentPane(view);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setResizable(true);
+
+            frame.setResizable(false);
             frame.pack();
             frame.setVisible(true);
         });
     }
+
 }
