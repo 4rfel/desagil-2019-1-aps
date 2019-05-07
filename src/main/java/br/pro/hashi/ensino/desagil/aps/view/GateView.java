@@ -20,7 +20,7 @@ public class GateView extends FixedPanel implements ItemListener {
     private final Switch[] switches;
     private final Gate gate;
     private final JCheckBox[] inputBoxes;
-    private final JCheckBox outputBox;
+    private final JCheckBox[] outputBox;
     private final Image image;
 
     public GateView(Gate gate) {
@@ -40,8 +40,6 @@ public class GateView extends FixedPanel implements ItemListener {
             gate.connect(i, switches[i]);
         }
 
-        outputBox = new JCheckBox();
-
         int x, y, step;
 
         x = BORDER;
@@ -52,17 +50,30 @@ public class GateView extends FixedPanel implements ItemListener {
             add(inputBox, x, y, SWITCH_SIZE, SWITCH_SIZE);
         }
 
-        add(outputBox, BORDER + SWITCH_SIZE + GATE_WIDTH, (GATE_HEIGHT - SWITCH_SIZE) / 2, SWITCH_SIZE, SWITCH_SIZE);
 
         String name = gate.toString() + ".png";
         URL url = getClass().getClassLoader().getResource(name);
         image = getToolkit().getImage(url);
 
+        int outputSize = gate.getOutputSize();
+
+        outputBox = new JCheckBox[outputSize];
+
+        if(outputSize == 1){
+            add(outputBox[0], BORDER + SWITCH_SIZE + GATE_WIDTH, (GATE_HEIGHT - SWITCH_SIZE) / 2, SWITCH_SIZE, SWITCH_SIZE);
+        }
+        else{
+            add(outputBox[0], BORDER + SWITCH_SIZE + GATE_WIDTH, (GATE_HEIGHT - SWITCH_SIZE) / 4, SWITCH_SIZE, SWITCH_SIZE);
+            add(outputBox[1], BORDER + SWITCH_SIZE + GATE_WIDTH, 3*(GATE_HEIGHT - SWITCH_SIZE) / 4, SWITCH_SIZE, SWITCH_SIZE);
+            outputBox[1].setEnabled(false);
+
+        }
+
         for (JCheckBox inputBox : inputBoxes) {
             inputBox.addItemListener(this);
         }
 
-        outputBox.setEnabled(false);
+        outputBox[0].setEnabled(false);
 
         update();
     }
@@ -78,7 +89,7 @@ public class GateView extends FixedPanel implements ItemListener {
 
         boolean result = gate.read();
 
-        outputBox.setSelected(result);
+        outputBox[0].setSelected(result);
     }
 
     @Override
